@@ -19,10 +19,10 @@ namespace lifecycletrigger_inactivetime\privacy;
 use core_privacy\local\metadata\null_provider;
 
 /**
- * Privacy subsystem implementation for lifecycletrigger_startdatedelay.
+ * Privacy subsystem implementation for lifecycletrigger_inactivetime.
  *
- * @package     lifecycletrigger_startdatedelay
- * @copyright   2022 ISB Bayern
+ * @package     lifecycletrigger_inactivetime
+ * @copyright   2022 Jonas Khan HFT
  * @author      Philipp Memmel
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

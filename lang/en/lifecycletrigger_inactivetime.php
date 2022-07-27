@@ -18,7 +18,7 @@
  * Lang strings for start date delay trigger
  *
  * @package    lifecycletrigger_startdatedelay
- * @copyright  2017 Tobias Reischmann WWU
+ * @copyright  2022 Jonas Khan HFT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Subplugin for the start date delay.
+ * Subplugin for the inactive time.
  *
  * @package lifecycletrigger_inactivetime
  * @copyright  2022 Jonas Khan HFT
