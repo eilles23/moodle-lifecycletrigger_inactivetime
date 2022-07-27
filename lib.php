@@ -17,8 +17,8 @@
 /**
  * Subplugin for the start date delay.
  *
- * @package lifecycletrigger_startdatedelay
- * @copyright  2017 Tobias Reischmann WWU
+ * @package lifecycletrigger_inactivetime
+ * @copyright  2022 Jonas Khan HFT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace tool_lifecycle\trigger;
@@ -33,8 +33,8 @@ require_once(__DIR__ . '/../../lib.php');
 
 /**
  * Class which implements the basic methods necessary for a cleanyp courses trigger subplugin
- * @package lifecycletrigger_startdatedelay
- * @copyright  2017 Tobias Reischmann WWU
+ * @package lifecycletrigger_inactivetime
+ * @copyright  2022 Jonas Khan HFT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class inactivetime extends base_automatic {
@@ -51,23 +51,20 @@ class inactivetime extends base_automatic {
     }
 
     /**
-     * Add sql comparing the current date to the start date of a course in combination with the specified delay.
+     * Add sql comparing the current logstore of a course in combination with the specified delay.
      * @param int $triggerid Id of the trigger.
      * @return array A list containing the constructed sql fragment and an array of parameters.
      * @throws \coding_exception
      * @throws \dml_exception
      */
     public function get_course_recordset_where($triggerid) {
-        $delay = settings_manager::get_settings($triggerid, settings_type::TRIGGER)['delay'];
-        
-        
+        $delay = settings_manager::get_settings($triggerid, settings_type::TRIGGER)['delay'];       
+        $interval = $delay / 86400;
+
         $sql = "{course}.id in (SELECT courseid
     FROM {logstore_standard_log}
-    WHERE FROM_UNIXTIME(timecreated, '%Y-%m-%d') > DATE_SUB(NOW(), INTERVAL 365 DAY) 
+    WHERE FROM_UNIXTIME(timecreated, '%Y-%m-%d') > DATE_SUB(NOW(), INTERVAL ". $interval ." DAY) 
      )";
-        /*$params = array(
-            "startdatedelay" => time() - $delay,
-        );*/
         
         return array($sql, array());
     }
@@ -91,12 +88,12 @@ class inactivetime extends base_automatic {
     }
 
     /**
-     * At the delay since the start date of a course.
+     * Add the delay since the last log entry of a course.
      * @param \MoodleQuickForm $mform
      * @throws \coding_exception
      */
     public function extend_add_instance_form_definition($mform) {
-        $mform->addElement('duration', 'delay', get_string('delay', 'lifecycletrigger_inactivetime'));
+        $mform->addElement('duration', 'delay', get_string('delay', 'lifecycletrigger_inactivetime'), array('units' => array(86400, 604800)));
         $mform->addHelpButton('delay', 'delay', 'lifecycletrigger_inactivetime');
     }
 
