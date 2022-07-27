@@ -61,7 +61,7 @@ class inactivetime extends base_automatic {
         $delay = settings_manager::get_settings($triggerid, settings_type::TRIGGER)['delay'];       
         $interval = $delay / 86400;
 
-        $sql = "{course}.id in (SELECT courseid
+        $sql = "{course}.id not in (SELECT courseid
     FROM {logstore_standard_log}
     WHERE FROM_UNIXTIME(timecreated, '%Y-%m-%d') > DATE_SUB(NOW(), INTERVAL ". $interval ." DAY) 
      )";
