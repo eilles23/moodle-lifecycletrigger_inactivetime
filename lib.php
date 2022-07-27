@@ -62,7 +62,7 @@ class inactivetime extends base_automatic {
 
         $sql = "{course}.id in (SELECT c.id
     				FROM {course} as c  
-    				WHERE c.id not in (SELECT courseid FROM {logstore_standard_log} as l WHERE FROM_UNIXTIME(l.timecreated) > DATE_SUB(NOW(), INTERVAL ".$delay." SECOND ) GROUP BY c.id HAVING COUNT(*) )
+    				WHERE c.id not in (SELECT courseid FROM {logstore_standard_log} as l JOIN {course} as cc on cc.id = l.courseid WHERE FROM_UNIXTIME(l.timecreated) > DATE_SUB(NOW(), INTERVAL ".$delay." SECOND ) GROUP BY cc.id HAVING COUNT(*) )
      	)";
      	
         
