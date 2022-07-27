@@ -60,10 +60,11 @@ class inactivetime extends base_automatic {
     public function get_course_recordset_where($triggerid) {
         $delay = settings_manager::get_settings($triggerid, settings_type::TRIGGER)['delay'];       
 
-        $sql = "{course}.id not in (SELECT courseid
-    FROM {logstore_standard_log}
-    WHERE FROM_UNIXTIME(timecreated, '%Y-%m-%d') > DATE_SUB(NOW(), INTERVAL ". $delay ." SECOND) 
-     )";
+        $sql = "{course}.id in (SELECT c.id
+    				FROM {course} as c  
+    				WHERE c.id not in (SELECT courseid FROM {logstore_standard_log} as l WHERE FROM_UNIXTIME(l.timecreated) > DATE_SUB(NOW(), INTERVAL ".$delay." SECOND ) GROUP BY c.id HAVING COUNT(*) )
+     	)";
+     	
         
         return array($sql, array());
     }
