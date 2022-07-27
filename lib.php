@@ -59,11 +59,10 @@ class inactivetime extends base_automatic {
      */
     public function get_course_recordset_where($triggerid) {
         $delay = settings_manager::get_settings($triggerid, settings_type::TRIGGER)['delay'];       
-        $interval = $delay / 86400;
 
         $sql = "{course}.id not in (SELECT courseid
     FROM {logstore_standard_log}
-    WHERE FROM_UNIXTIME(timecreated, '%Y-%m-%d') > DATE_SUB(NOW(), INTERVAL ". $interval ." DAY) 
+    WHERE FROM_UNIXTIME(timecreated, '%Y-%m-%d') > DATE_SUB(NOW(), INTERVAL ". $delay ." SECOND) 
      )";
         
         return array($sql, array());
@@ -93,7 +92,7 @@ class inactivetime extends base_automatic {
      * @throws \coding_exception
      */
     public function extend_add_instance_form_definition($mform) {
-        $mform->addElement('duration', 'delay', get_string('delay', 'lifecycletrigger_inactivetime'), array('units' => array(86400, 604800)));
+        $mform->addElement('duration', 'delay', get_string('delay', 'lifecycletrigger_inactivetime'), array('units' => array(60, 3600, 86400, 604800)));
         $mform->addHelpButton('delay', 'delay', 'lifecycletrigger_inactivetime');
     }
 
