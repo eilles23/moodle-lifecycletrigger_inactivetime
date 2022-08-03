@@ -17,12 +17,12 @@
 /**
  * Trigger test for start date delay trigger.
  *
- * @package    lifecycletrigger_startdatedelay
+ * @package    lifecycletrigger_inactivetime
  * @group      lifecycletrigger
- * @copyright  2017 Tobias Reischmann WWU
+ * @copyright  2022 Jonas Khan HFT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace lifecycletrigger_startdatedelay;
+namespace lifecycletrigger_inactivetime;
 
 use tool_lifecycle\local\entity\trigger_subplugin;
 use tool_lifecycle\processor;
@@ -32,14 +32,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once(__DIR__ . '/../lib.php');
 require_once(__DIR__ . '/generator/lib.php');
 
-/**
- * Trigger test for start date delay trigger.
- *
- * @package    lifecycletrigger_startdatedelay
- * @group      lifecycletrigger
- * @copyright  2017 Tobias Reischmann WWU
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+
 class trigger_test extends \advanced_testcase {
 
     /** @var $triggerinstance trigger_subplugin Instance of the trigger. */
@@ -53,7 +46,7 @@ class trigger_test extends \advanced_testcase {
         $this->setAdminUser();
 
         $this->processor = new processor();
-        $this->triggerinstance = \tool_lifecycle_trigger_startdatedelay_generator::create_trigger_with_workflow();
+        $this->triggerinstance = \tool_lifecycle_trigger_inactivetime_generator::create_trigger_with_workflow();
     }
 
     /**
@@ -61,7 +54,7 @@ class trigger_test extends \advanced_testcase {
      */
     public function test_young_course() {
 
-        $course = $this->getDataGenerator()->create_course(array('startdate' => time() - 50 * 24 * 60 * 60));
+        $course = $this->getDataGenerator()->create_course();
 
         $recordset = $this->processor->get_course_recordset([$this->triggerinstance], []);
         $found = false;
@@ -79,8 +72,8 @@ class trigger_test extends \advanced_testcase {
      */
     public function test_old_course() {
 
-        $course = $this->getDataGenerator()->create_course(array('startdate' => time() - 200 * 24 * 60 * 60));
-
+        $course = $this->getDataGenerator()->create_course();
+	sleep(13);
         $recordset = $this->processor->get_course_recordset([$this->triggerinstance], []);
         $found = false;
         foreach ($recordset as $element) {

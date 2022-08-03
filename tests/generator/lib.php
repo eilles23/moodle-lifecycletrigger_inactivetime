@@ -15,11 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * lifecycletrigger_startdatedelay generator tests
+ * lifecycletrigger_inactivetime generator tests
  *
- * @package    lifecycletrigger_startdatedelay
+ * @package    lifecycletrigger_inactivetime
  * @category   test
- * @copyright  2018 Tobias Reischmann WWU
+ * @copyright  2022 Jonas Khan HFT
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -30,15 +30,8 @@ use tool_lifecycle\local\manager\trigger_manager;
 use tool_lifecycle\local\manager\workflow_manager;
 use tool_lifecycle\settings_type;
 
-/**
- * lifecycletrigger_startdatedelay generator tests
- *
- * @package    lifecycletrigger_startdatedelay
- * @category   test
- * @copyright  2018 Tobias Reischmann WWU
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-class tool_lifecycle_trigger_startdatedelay_generator extends testing_module_generator {
+
+class tool_lifecycle_trigger_inactivetime_generator extends testing_module_generator {
 
     /**
      * Creates a trigger startdatedelay for an artificial workflow without steps.
@@ -54,14 +47,14 @@ class tool_lifecycle_trigger_startdatedelay_generator extends testing_module_gen
         workflow_manager::insert_or_update($workflow);
         // Create trigger.
         $record = new stdClass();
-        $record->subpluginname = 'startdatedelay';
-        $record->instancename = 'startdatedelay';
+        $record->subpluginname = 'inactivetime';
+        $record->instancename = 'inactivetime';
         $record->workflowid = $workflow->id;
         $trigger = trigger_subplugin::from_record($record);
         trigger_manager::insert_or_update($trigger);
         // Set delay setting.
         $settings = new stdClass();
-        $settings->delay = 16416000;
+        $settings->delay = 10;
         settings_manager::save_settings($trigger->id, settings_type::TRIGGER, $trigger->subpluginname, $settings);
 
         return $trigger;
